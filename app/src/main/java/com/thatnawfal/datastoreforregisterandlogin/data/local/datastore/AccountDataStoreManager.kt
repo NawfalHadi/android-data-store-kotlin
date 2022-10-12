@@ -29,6 +29,10 @@ class AccountDataStoreManager(private val ctx: Context) {
                 ctx.accountDataStore.edit { status ->
                     status[isLogin] = true
                 }
+            } else {
+                ctx.accountDataStore.edit { status ->
+                    status[isLogin] = false
+                }
             }
         }
     }
