@@ -13,7 +13,7 @@ import com.thatnawfal.datastoreforregisterandlogin.utils.viewModelFactory
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityRegisterBinding
-    private lateinit var pref : AccountDataStoreManager
+    private var pref = AccountDataStoreManager(this)
     private val viewModel : RegisterViewModel by viewModelFactory {
         RegisterViewModel(pref)
     }
@@ -23,11 +23,19 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        pref = AccountDataStoreManager(this)
-
         binding.btnRegLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
+
+//            viewModel.getUserData().observe(this){
+//                username = it.elementAt(0).toString()
+//                password = it.elementAt(1).toString()
+//                Toast.makeText(this, "Username : $username Password : $password", Toast.LENGTH_SHORT).show()
+//            }
+
+            viewModel.getUsername().observe(this){
+                Toast.makeText(this, "Username : $it" , Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.btnRegSubmit.setOnClickListener {
@@ -50,12 +58,15 @@ class RegisterActivity : AppCompatActivity() {
         var valid = false
 
         if (username.isNullOrEmpty()){
+            valid = false
             Toast.makeText(this, "Masukkan Username", Toast.LENGTH_SHORT).show()
         } else { valid = true }
         if (password.isNullOrEmpty()){
+            valid = false
             Toast.makeText(this, "Masukkan Password", Toast.LENGTH_SHORT).show()
         } else { valid = true }
         if (username.equals(password)) {
+            valid = false
             Toast.makeText(this, "Masukkan Password", Toast.LENGTH_SHORT).show()
         } else { valid = true }
 

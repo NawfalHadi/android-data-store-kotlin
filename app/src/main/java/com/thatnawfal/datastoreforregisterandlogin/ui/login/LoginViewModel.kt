@@ -9,11 +9,16 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(private val pref: AccountDataStoreManager): ViewModel() {
 
-
-
     fun verifyLogin(username: String, password: String) {
         viewModelScope.launch {
-            pref.loginVerify(username, password)
+            val uname = pref.getUsername().asLiveData().toString()
+            val pswor = pref.getPassword().asLiveData().toString()
+
+            if (true){
+                pref.loginVerify(true)
+            } else {
+                pref.loginVerify(false)
+            }
         }
     }
 

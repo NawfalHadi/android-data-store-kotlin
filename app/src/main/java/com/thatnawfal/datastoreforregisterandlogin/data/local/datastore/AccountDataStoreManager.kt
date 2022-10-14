@@ -19,21 +19,12 @@ class AccountDataStoreManager(private val ctx: Context) {
         ctx.accountDataStore.edit {
             it[username] = usernames
             it[password] = passwords
-            it[isLogin] = false
         }
     }
 
-    suspend fun loginVerify(usernames: String, passwords: String) {
-        ctx.accountDataStore.data.map {
-            if (usernames == it[username] && passwords == it[password]) {
-                ctx.accountDataStore.edit { status ->
-                    status[isLogin] = true
-                }
-            } else {
-                ctx.accountDataStore.edit { status ->
-                    status[isLogin] = false
-                }
-            }
+    suspend fun loginVerify(status : Boolean) {
+        ctx.accountDataStore.edit {
+            it[isLogin] = status
         }
     }
 
@@ -43,19 +34,23 @@ class AccountDataStoreManager(private val ctx: Context) {
         }
     }
 
-    fun getAllData(): Flow<Set<String>>{
+    fun getUsername(): Flow<String> {
         return ctx.accountDataStore.data.map {
-            it[datas] ?: setOf("error", "wrong password or email")
+            it[username] ?: ""
         }
     }
 
+    fun getPassword(): Flow<String> {
+        return ctx.accountDataStore.data.map {
+            it[password] ?: ""
+        }
+    }
     companion object {
         private const val DATASTORE_NAME = "account_preference"
 
         private val username = stringPreferencesKey("username_key")
         private val password = stringPreferencesKey("password_key")
         private val isLogin = booleanPreferencesKey("isLogin_key")
-        private val datas = stringSetPreferencesKey("set_data_key")
 
         private val Context.accountDataStore by preferencesDataStore(
             name = DATASTORE_NAME

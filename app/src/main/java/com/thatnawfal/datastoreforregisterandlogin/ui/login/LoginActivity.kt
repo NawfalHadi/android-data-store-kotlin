@@ -15,7 +15,7 @@ import com.thatnawfal.datastoreforregisterandlogin.utils.viewModelFactory
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityLoginBinding
-    private lateinit var pref : AccountDataStoreManager
+    private var pref = AccountDataStoreManager(this)
     private val viewModel : LoginViewModel by viewModelFactory {
         LoginViewModel(pref)
     }
@@ -25,7 +25,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        pref = AccountDataStoreManager(this)
         observeAction()
 
         binding.btnLogReg.setOnClickListener {
@@ -45,6 +44,7 @@ class LoginActivity : AppCompatActivity() {
             )
             viewModel.getLoginStatus().observe(this){
                 Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+                if (it) startActivity(Intent(this@LoginActivity , MainActivity::class.java))
             }
         }
     }
@@ -67,11 +67,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun observeAction() {
         viewModel.getLoginStatus().observe(this){
-            Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
-            if (it) {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }
+            if (it) startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         }
     }
 }
