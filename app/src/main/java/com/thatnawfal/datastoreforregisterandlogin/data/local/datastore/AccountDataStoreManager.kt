@@ -28,6 +28,12 @@ class AccountDataStoreManager(private val ctx: Context) {
         }
     }
 
+    suspend fun setImage(stringUri: String) {
+        ctx.accountDataStore.edit {
+            it[uriImage] = stringUri
+        }
+    }
+
     fun checkLogin(): Flow<Boolean>{
         return ctx.accountDataStore.data.map {
             it[isLogin] ?: false
@@ -45,6 +51,13 @@ class AccountDataStoreManager(private val ctx: Context) {
             it[password] ?: ""
         }
     }
+
+    fun getImage(): Flow<String> {
+        return ctx.accountDataStore.data.map {
+            it[uriImage] ?: ""
+        }
+    }
+
     companion object {
         private const val DATASTORE_NAME = "account_preference"
 
@@ -52,6 +65,7 @@ class AccountDataStoreManager(private val ctx: Context) {
         private val password = stringPreferencesKey("password_key")
         private val isLogin = booleanPreferencesKey("isLogin_key")
 
+        private val uriImage = stringPreferencesKey("image_key")
         private val Context.accountDataStore by preferencesDataStore(
             name = DATASTORE_NAME
         )

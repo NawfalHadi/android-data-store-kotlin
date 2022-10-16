@@ -4,12 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.thatnawfal.datastoreforregisterandlogin.R
 import com.thatnawfal.datastoreforregisterandlogin.data.local.datastore.AccountDataStoreManager
 import com.thatnawfal.datastoreforregisterandlogin.databinding.ActivityLoginBinding
 import com.thatnawfal.datastoreforregisterandlogin.ui.MainActivity
 import com.thatnawfal.datastoreforregisterandlogin.ui.register.RegisterActivity
-import com.thatnawfal.datastoreforregisterandlogin.ui.register.RegisterViewModel
 import com.thatnawfal.datastoreforregisterandlogin.utils.viewModelFactory
 
 class LoginActivity : AppCompatActivity() {
@@ -38,15 +36,29 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginAccount() {
         if (formValid()){
-            viewModel.verifyLogin(
-                binding.etLogUsername.text.toString(),
-                binding.etLogPass.text.toString()
-            )
-            viewModel.getLoginStatus().observe(this){
-                Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
-                if (it) startActivity(Intent(this@LoginActivity , MainActivity::class.java))
+            if (verifyLogin(
+                    binding.etLogUsername.text.toString(),
+                    binding.etLogPass.text.toString()
+            )) {
+                startActivity(Intent(this@LoginActivity , MainActivity::class.java))
+                finish()
+            } else {
+                Toast.makeText(this, "false", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    fun verifyLogin(username: String, password: String): Boolean {
+        var uname = ""
+        var pass = ""
+        viewModel.getUsername().observe(this) {
+            uname = it.toString()
+        }
+
+        viewModel.getPassword().observe(this) {
+            pass = it.toString()
+        }
+        return (uname == username) && (pass == password)
     }
 
     private fun formValid(): Boolean {

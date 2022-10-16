@@ -2,6 +2,5 @@
 <paths>
     <external-path
         name="my_images"
-        path="Android/data/com.thatnawfal.datastoreforregisterandlogin/files/images"
-        />
+        path="Android/data/com.thatnawfal.datastoreforregisterandlogin/files/Pictures"/>
 </paths>

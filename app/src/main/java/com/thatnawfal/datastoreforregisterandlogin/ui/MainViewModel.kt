@@ -19,6 +19,15 @@ class MainViewModel(private val pref: AccountDataStoreManager): ViewModel() {
         }
     }
 
+    fun setImage(stringUri: String) {
+        viewModelScope.launch {
+            pref.setImage(stringUri)
+        }
+    }
+
+    fun getImage(): LiveData<String> {
+        return pref.getImage().asLiveData()
+    }
 
 
 }

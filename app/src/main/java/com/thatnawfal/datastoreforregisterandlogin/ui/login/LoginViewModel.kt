@@ -1,5 +1,7 @@
 package com.thatnawfal.datastoreforregisterandlogin.ui.login
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -9,17 +11,12 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(private val pref: AccountDataStoreManager): ViewModel() {
 
-    fun verifyLogin(username: String, password: String) {
-        viewModelScope.launch {
-            val uname = pref.getUsername().asLiveData().toString()
-            val pswor = pref.getPassword().asLiveData().toString()
-
-            if (true){
-                pref.loginVerify(true)
-            } else {
-                pref.loginVerify(false)
-            }
-        }
+    fun getUsername() : LiveData<String> {
+        return pref.getUsername().asLiveData()
+    }
+//
+    fun getPassword() : LiveData<String> {
+        return pref.getPassword().asLiveData()
     }
 
     fun getLoginStatus(): LiveData<Boolean>{

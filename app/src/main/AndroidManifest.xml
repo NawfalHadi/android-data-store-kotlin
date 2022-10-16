@@ -4,6 +4,9 @@
     package="com.thatnawfal.datastoreforregisterandlogin">
 
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.webkit.PermissionRequest"/>
     
     <application
         android:allowBackup="true"
@@ -16,9 +19,19 @@
         android:theme="@style/Theme.DataStoreForRegisterAndLogin"
         tools:targetApi="31">
 
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <provider
-            android:authorities="${applicationId}.provider"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
 
@@ -29,21 +42,15 @@
         </provider>
 
         <activity
-            android:name=".ui.login.LoginActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".ui.register.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="false">
         </activity>
+
+
     </application>
+
 
 </manifest>
